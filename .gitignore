@@ -4,4 +4,6 @@ __pycache__
 .next
 dist
 target
+services/notification/**/bin/
+services/notification/**/obj/
 .env

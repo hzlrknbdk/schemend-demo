@@ -1,0 +1,42 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
+    <PackageReference Include="NSwag.MSBuild" Version="14.7.1">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <!--
+    Regenerates the orders client from the schema the provider owns (SPEC §2 step 4/§8), the
+    same way Java's openapi-generator-maven-plugin does at generate-sources. Runs before compile
+    so the freshly generated types are what gets built/typechecked, mirroring the TS/Java
+    adapters' "regenerate, then compile" order. Output stays under obj/ (never committed) -
+    openApiToCSharpClient needs the static schema file, not a built assembly, so a pre-build
+    target is safe here (unlike NSwag's aspNetCoreToOpenApi direction, which does need one).
+  -->
+  <Target Name="GenerateOrdersClient" BeforeTargets="BeforeBuild">
+    <MakeDir Directories="$(BaseIntermediateOutputPath)Generated" />
+    <Exec Command="$(NSwagExe_Net100) openapi2csclient /input:../../../orders/openapi.json /classname:OrdersClient /namespace:Notification.OrdersClient /GenerateClientInterfaces:true /output:$(BaseIntermediateOutputPath)Generated/OrdersClient.cs" />
+  </Target>
+
+  <!--
+    A plain top-level ItemGroup's Compile glob is fixed at project-evaluation time, before
+    GenerateOrdersClient has run - on a clean checkout obj/Generated doesn't exist yet, so it
+    would evaluate to nothing. Re-globbing inside a target that runs after generation (and before
+    CoreCompile) picks up the file for the build that just created it, not only the next one.
+  -->
+  <Target Name="IncludeGeneratedOrdersClient" AfterTargets="GenerateOrdersClient" BeforeTargets="CoreCompile">
+    <ItemGroup>
+      <Compile Include="$(BaseIntermediateOutputPath)Generated/**/*.cs" />
+    </ItemGroup>
+  </Target>
+
+</Project>
