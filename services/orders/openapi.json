@@ -101,6 +101,10 @@
           },
           "status": {
             "$ref": "#/components/schemas/OrderStatus"
+          },
+          "placedAt": {
+            "type": "string",
+            "title": "Placedat"
           }
         },
         "type": "object",
