@@ -31,6 +31,10 @@
         "properties": {
           "id": {
             "type": "string"
+          },
+          "note": {
+            "type": "string",
+            "title": "Note"
           }
         },
         "required": [

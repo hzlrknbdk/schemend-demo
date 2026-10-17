@@ -56,6 +56,8 @@ export interface components {
             /** Totalprice */
             totalPrice: number;
             status: components["schemas"]["OrderStatus"];
+            /** Placedat */
+            placedAt?: string;
         };
         /** OrderItem */
         OrderItem: {
