@@ -1,0 +1,43 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Schemend Smoke Second API",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/smoke": {
+      "get": {
+        "summary": "Smoke",
+        "operationId": "getSmoke",
+        "responses": {
+          "200": {
+            "description": "ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Smoke"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Smoke": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "title": "Smoke"
+      }
+    }
+  }
+}

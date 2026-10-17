@@ -8,7 +8,8 @@
     "start": "next start",
     "generate:api": "openapi-typescript ../../services/orders/openapi.json -o src/lib/orders-api.d.ts",
     "typecheck": "tsc --noEmit",
-    "test": "vitest run"
+    "test": "vitest run",
+    "generate:schemend-smoke-second": "openapi-typescript ./.schemend-smoke-second.json -o src/lib/schemend-smoke-second-api.d.ts"
   },
   "dependencies": {
     "next": "16.3.8",
